@@ -1,0 +1,1607 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memorae - Your WhatsApp Assistant</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        @keyframes float-reverse {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(20px) rotate(-5deg); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes bubble-rise {
+            0% {
+                transform: translateY(0px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes matrix {
+            0% { transform: translateY(-100%); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        @keyframes orbitSmall {
+            0% { transform: rotate(0deg) translateX(80px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(80px) rotate(-360deg); }
+        }
+
+        @keyframes orbitMedium {
+            0% { transform: rotate(0deg) translateX(120px) rotate(0deg); }
+            100% { transform: rotate(-360deg) translateX(120px) rotate(360deg); }
+        }
+
+        @keyframes orbitLarge {
+            0% { transform: rotate(0deg) translateX(160px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(160px) rotate(-360deg); }
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(37, 211, 102, 0.5), 0 0 20px rgba(37, 211, 102, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(37, 211, 102, 0.8), 0 0 30px rgba(37, 211, 102, 0.6); }
+        }
+
+        @keyframes scan-line {
+            0% { top: -100%; }
+            100% { top: 100%; }
+        }
+
+        @keyframes wire-pulse {
+            0%, 100% { stroke-dashoffset: 1000; opacity: 0.3; }
+            50% { stroke-dashoffset: 0; opacity: 1; }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes comet-move {
+            0% {
+                transform: translateX(-100px) translateY(-100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(800px) translateY(800px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes rock-float {
+            0%, 100% { transform: translateY(0px) rotateZ(0deg); }
+            50% { transform: translateY(-30px) rotateZ(180deg); }
+        }
+
+        @keyframes planet-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes star-shine {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Animated Background Particles */
+        .animated-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+
+        .particle-1 {
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.3);
+            top: -100px;
+            left: -100px;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .particle-2 {
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.2);
+            bottom: -50px;
+            right: -50px;
+            animation: float-reverse 25s ease-in-out infinite;
+        }
+
+        .particle-3 {
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.25);
+            top: 50%;
+            right: 10%;
+            animation: float 30s ease-in-out infinite;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #0a1e2e 0%, #16213e 50%, #1a3a52 100%);
+            color: white;
+            padding: 80px 0 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(37, 211, 102, 0.3), inset 0 0 60px rgba(37, 211, 102, 0.05);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(37, 211, 102, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(18, 140, 126, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+            opacity: 0.6;
+            animation: float 30s ease-in-out infinite;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(90deg, transparent 0%, rgba(37, 211, 102, 0.1) 50%, transparent 100%),
+                linear-gradient(180deg, transparent 0%, rgba(37, 211, 102, 0.05) 50%, transparent 100%);
+            animation: scan-line 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            animation: pulse-glow 2s ease-in-out infinite;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            flex-shrink: 0;
+            padding: 8px;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.1));
+        }
+
+        /* AI World Background Elements */
+        .ai-node {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(37, 211, 102, 0.6);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(37, 211, 102, 0.8), 0 0 20px rgba(37, 211, 102, 0.4);
+            z-index: 1;
+        }
+
+        .ai-node.small {
+            width: 5px;
+            height: 5px;
+            animation: glow-pulse 3s ease-in-out infinite;
+        }
+
+        .ai-node.medium {
+            width: 10px;
+            height: 10px;
+            animation: glow-pulse 2.5s ease-in-out infinite;
+        }
+
+        .ai-node.large {
+            width: 12px;
+            height: 12px;
+            animation: glow-pulse 2s ease-in-out infinite;
+        }
+
+        .ai-orbit {
+            position: absolute;
+            z-index: 1;
+        }
+
+        .ai-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(37, 211, 102, 0.8);
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(37, 211, 102, 0.6);
+        }
+
+        .orbit-small {
+            width: 160px;
+            height: 160px;
+            border: 1px solid rgba(37, 211, 102, 0.2);
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            animation: orbitSmall 20s linear infinite;
+        }
+
+        .orbit-medium {
+            width: 240px;
+            height: 240px;
+            border: 1px solid rgba(37, 211, 102, 0.15);
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            animation: orbitMedium 30s linear infinite reverse;
+        }
+
+        .orbit-large {
+            width: 320px;
+            height: 320px;
+            border: 1px solid rgba(37, 211, 102, 0.1);
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            animation: orbitLarge 45s linear infinite;
+        }
+
+        /* AI Grid Background */
+        .header::before {
+            background-image: 
+                linear-gradient(rgba(37, 211, 102, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(37, 211, 102, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: 0 0, 0 0;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 0 0 30px rgba(37, 211, 102, 0.3);
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.9) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.08), 0 0 20px rgba(37, 211, 102, 0.2);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .cta-button {
+            background: white;
+            color: #25d366;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.4s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #ffffff, #f0fdf4);
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .whatsapp-mockup {
+            margin-top: 3rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .phone-frame {
+            background: linear-gradient(135deg, #1f2937 0%, #2d3748 100%);
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+
+        .chat-screen {
+            background: linear-gradient(135deg, #e5ddd5 0%, #f0ebe5 100%);
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 300px;
+            position: relative;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+            margin: -20px -20px 20px -20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2);
+        }
+
+        .chat-avatar {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 18px;
+            margin-bottom: 10px;
+            max-width: 80%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.sent {
+            background: linear-gradient(135deg, #dcf8c6 0%, #c6f5a6 100%);
+            margin-left: auto;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(37, 211, 102, 0.1) 0%, transparent 50%),
+                        linear-gradient(180deg, #0a1e2e 0%, #1a2a3a 50%, #0f2438 100%);
+            background-attachment: fixed;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .features::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 60px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 50px 50px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 10px, #eee, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: twinkle 3s ease-in-out infinite;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .features::after {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255, 100, 150, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            top: 10%;
+            right: 5%;
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: #ffffff;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            text-shadow: 0 2px 10px rgba(37, 211, 102, 0.3);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #25d366, #128c7e);
+            border-radius: 2px;
+            box-shadow: 0 2px 10px rgba(37, 211, 102, 0.5);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid rgba(37, 211, 102, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(37, 211, 102, 0.1) 0%, transparent 70%);
+            animation: float 15s ease-in-out infinite;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(37, 211, 102, 0.25);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: white;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.15) rotate(10deg);
+            box-shadow: 0 12px 35px rgba(37, 211, 102, 0.4);
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .feature-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 80px 0;
+            background: linear-gradient(180deg, #0a1e2e 0%, #1a3a52 50%, #0f2438 100%);
+            background-attachment: fixed;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefits::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(1px 1px at 10px 20px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 80px 10px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 60px, #eee, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 130px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 50px 90px, #ddd, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: twinkle 4s ease-in-out infinite;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(37, 211, 102, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .benefit-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.2);
+            transform: translateX(10px);
+        }
+
+        .benefit-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .benefit-content h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .benefit-content p {
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+        }
+
+        /* How it works */
+        .how-it-works {
+            padding: 80px 0;
+            background: radial-gradient(ellipse at 80% 20%, rgba(100, 150, 255, 0.1) 0%, transparent 40%),
+                        linear-gradient(180deg, #0a1e2e 0%, #1a2a3a 50%, #0f2438 100%);
+            background-attachment: fixed;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .how-it-works::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(1px 1px at 30px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 100px 20px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 70px 80px, #eee, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 120px 100px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 120px, #ddd, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: twinkle 5s ease-in-out infinite;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .how-it-works::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(150, 100, 200, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            top: 20%;
+            left: 10%;
+            animation: planet-rotate 60s linear infinite;
+            pointer-events: none;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(37, 211, 102, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.2);
+            transform: translateY(-10px);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step:hover .step-number {
+            transform: scale(1.1) rotate(360deg);
+            box-shadow: 0 12px 35px rgba(37, 211, 102, 0.4);
+        }
+
+        .step h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .step p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Pricing */
+        .pricing {
+            padding: 80px 0;
+            background: radial-gradient(ellipse at 20% 80%, rgba(200, 100, 255, 0.1) 0%, transparent 40%),
+                        linear-gradient(180deg, #0a1e2e 0%, #1a3a52 50%, #0f2438 100%);
+            background-attachment: fixed;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(1px 1px at 20px 50px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 60px 30px, #eee, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 110px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 110px, #ddd, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 140px 40px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: twinkle 6s ease-in-out infinite;
+            opacity: 0.65;
+            pointer-events: none;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(37, 211, 102, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(37, 211, 102, 0.1) 0%, transparent 100%);
+            transition: top 0.3s ease;
+        }
+
+        .pricing-card.featured {
+            border-color: #25d366;
+            transform: scale(1.05);
+            box-shadow: 0 20px 50px rgba(37, 211, 102, 0.3);
+        }
+
+        .pricing-card:hover {
+            box-shadow: 0 20px 60px rgba(37, 211, 102, 0.3);
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .pricing-card:hover::before {
+            top: 0;
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .plan-price {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #25d366;
+            margin-bottom: 1rem;
+        }
+
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+
+        .plan-features li {
+            padding: 0.5rem 0;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .plan-features li::before {
+            content: "✓";
+            color: #25d366;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        /* FAQ */
+        .faq {
+            padding: 80px 0;
+            background: radial-gradient(ellipse at 50% 100%, rgba(100, 200, 255, 0.1) 0%, transparent 40%),
+                        linear-gradient(180deg, #0a1e2e 0%, #1a2a3a 50%, #0f2438 100%);
+            background-attachment: fixed;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .faq::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(1px 1px at 15px 30px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 75px 60px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 100px 40px, #eee, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 50px 100px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 130px 90px, #ddd, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: twinkle 7s ease-in-out infinite;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .faq::after {
+            content: '';
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(200, 150, 100, 0.25) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: 10%;
+            right: 5%;
+            animation: float 25s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(37, 211, 102, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .faq-item:hover {
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.25);
+            transform: translateX(5px);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(37, 211, 102, 0.1);
+            color: #25d366;
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-toggle {
+            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: #25d366;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg) scale(1.2);
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #000a0f 0%, #0a1520 50%, #000a0f 100%);
+            background-attachment: fixed;
+            color: white;
+            padding: 3rem 0 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 -10px 40px rgba(37, 211, 102, 0.1);
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(1px 1px at 25px 25px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 85px 15px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 50px 70px, #eee, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 120px 50px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 120px, #ddd, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: twinkle 8s ease-in-out infinite;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #25d366, #128c7e);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-links a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .footer-copyright {
+            color: #718096;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .section-title::after {
+                width: 60px;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            .header {
+                padding: 60px 0 80px;
+            }
+
+            .features, .benefits, .how-it-works, .pricing, .faq {
+                padding: 60px 0;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1.02);
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .feature-card:hover {
+                transform: translateY(-10px) scale(1.01);
+            }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body><!-- Header -->
+  <header class="header">
+   <!-- AI Orbit Elements -->
+   <div class="ai-orbit orbit-large"></div>
+   <div class="ai-orbit orbit-medium"></div>
+   <div class="ai-orbit orbit-small"></div>
+   
+   <!-- AI Nodes -->
+   <div class="ai-node medium" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
+   <div class="ai-node small" style="top: 15%; right: 15%; animation-delay: 0.5s;"></div>
+   <div class="ai-node large" style="bottom: 20%; left: 20%; animation-delay: 1s;"></div>
+   <div class="ai-node small" style="bottom: 15%; right: 10%; animation-delay: 0.8s;"></div>
+   <div class="ai-node medium" style="top: 50%; left: 5%; animation-delay: 0.3s;"></div>
+   <div class="ai-node small" style="top: 40%; right: 8%; animation-delay: 1.2s;"></div>
+
+   <div class="container">
+    <div class="header-content">
+     <div class="logo">
+      <div class="logo-icon">
+       <img src="logo.svg" alt="Memorae Logo" />
+      </div><span id="company-name">Memorae</span>
+     </div>
+     <h1 class="hero-title" id="main-headline">Your WhatsApp assistant who remembers what you forget</h1>
+     <p class="hero-subtitle" id="sub-headline">One message. One assistant. Many reminders.</p><a href="#" class="cta-button" id="cta-button">Try in WhatsApp</a>
+     <div class="whatsapp-mockup">
+      <div class="phone-frame">
+       <div class="chat-screen">
+        <div class="chat-header">
+         <div class="chat-avatar">
+          🧠
+         </div>
+         <div>
+          <div style="font-weight: 600;">
+           Memorae
+          </div>
+          <div style="font-size: 0.8rem; opacity: 0.8;">
+           online
+          </div>
+         </div>
+        </div>
+        <div class="message sent">
+         Remind me to call mom at 6pm
+        </div>
+        <div class="message">
+         ✅ Got it! I'll remind you to call mom today at 6:00 PM
+        </div>
+        <div class="message sent">
+         Also, grocery shopping tomorrow
+        </div>
+        <div class="message">
+         📝 Added "grocery shopping" to your reminders for tomorrow. What time works best?
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </header><!-- Features Section -->
+  <section class="features">
+   <div class="container">
+    <h2 class="section-title">Everything you need, right in WhatsApp</h2>
+    <div class="features-grid">
+     <div class="feature-card">
+      <div class="feature-icon">
+       🔔
+      </div>
+      <h3 class="feature-title">One-time or recurring reminders</h3>
+      <p class="feature-description">Set reminders for any time - once, daily, weekly, or custom schedules. Never miss important tasks again.</p>
+     </div>
+     <div class="feature-card">
+      <div class="feature-icon">
+       🎤
+      </div>
+      <h3 class="feature-title">Voice &amp; text input inside WhatsApp</h3>
+      <p class="feature-description">Send voice messages or type naturally. Memorae understands both and responds instantly in your chat.</p>
+     </div>
+     <div class="feature-card">
+      <div class="feature-icon">
+       📅
+      </div>
+      <h3 class="feature-title">Google Calendar sync &amp; list creation</h3>
+      <p class="feature-description">Automatically sync with your Google Calendar and create organized lists for shopping, tasks, and more.</p>
+     </div>
+     <div class="feature-card">
+      <div class="feature-icon">
+       🌍
+      </div>
+      <h3 class="feature-title">100+ languages supported</h3>
+      <p class="feature-description">Communicate in your preferred language. Memorae speaks over 100 languages fluently.</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Benefits Section -->
+  <section class="benefits">
+   <div class="container">
+    <h2 class="section-title">Why choose Memorae?</h2>
+    <div class="benefits-grid">
+     <div class="benefit-item">
+      <div class="benefit-icon">
+       ⏰
+      </div>
+      <div class="benefit-content">
+       <h3>Save time—get back 3 hours every week</h3>
+       <p>Stop forgetting important tasks and appointments. Memorae handles the mental load so you can focus on what matters.</p>
+      </div>
+     </div>
+     <div class="benefit-item">
+      <div class="benefit-icon">
+       📱
+      </div>
+      <div class="benefit-content">
+       <h3>Stay in WhatsApp—no new app to learn</h3>
+       <p>Use the app you already know and love. No downloads, no new interfaces, no learning curve.</p>
+      </div>
+     </div>
+     <div class="benefit-item">
+      <div class="benefit-icon">
+       💬
+      </div>
+      <div class="benefit-content">
+       <h3>Everything done by chat—quick, natural</h3>
+       <p>Just message like you would a friend. Memorae understands natural language and context perfectly.</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- How it works -->
+  <section class="how-it-works">
+   <div class="container">
+    <h2 class="section-title">How it works</h2>
+    <div class="steps-container">
+     <div class="step">
+      <div class="step-number">
+       1
+      </div>
+      <h3>Message Memorae in WhatsApp</h3>
+      <p>Add Memorae as a contact and start chatting like you would with any friend.</p>
+     </div>
+     <div class="step">
+      <div class="step-number">
+       2
+      </div>
+      <h3>Tell what you need</h3>
+      <p>Simply say "Remind me to..." or describe your task in natural language.</p>
+     </div>
+     <div class="step">
+      <div class="step-number">
+       3
+      </div>
+      <h3>Receive reminder at the right time</h3>
+      <p>Get a WhatsApp message exactly when you need it, with all the details you provided.</p>
+     </div>
+     <div class="step">
+      <div class="step-number">
+       4
+      </div>
+      <h3>Modify or cancel via chat</h3>
+      <p>Change times, add details, or cancel reminders by simply messaging Memorae again.</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Pricing -->
+  <section class="pricing">
+   <div class="container">
+    <h2 class="section-title">Choose your plan</h2>
+    <div class="pricing-grid">
+     <div class="pricing-card">
+      <h3 class="plan-name">Basic</h3>
+      <div class="plan-price">
+       Free
+      </div>
+      <ul class="plan-features">
+       <li>10 reminders per month</li>
+       <li>Basic voice &amp; text input</li>
+       <li>Simple one-time reminders</li>
+       <li>WhatsApp integration</li>
+      </ul><a href="#" class="cta-button">Get Started</a>
+     </div>
+     <div class="pricing-card featured">
+      <h3 class="plan-name">Pro</h3>
+      <div class="plan-price">
+       $9.99<span style="font-size: 1rem; color: #4a5568;">/month</span>
+      </div>
+      <ul class="plan-features">
+       <li>Unlimited reminders</li>
+       <li>Recurring reminders</li>
+       <li>Google Calendar sync</li>
+       <li>List creation &amp; management</li>
+       <li>Priority support</li>
+      </ul><a href="#" class="cta-button">Start Free Trial</a>
+     </div>
+     <div class="pricing-card">
+      <h3 class="plan-name">SuperNova</h3>
+      <div class="plan-price">
+       $19.99<span style="font-size: 1rem; color: #4a5568;">/month</span>
+      </div>
+      <ul class="plan-features">
+       <li>Everything in Pro</li>
+       <li>Advanced AI features</li>
+       <li>Multiple calendar sync</li>
+       <li>Team collaboration</li>
+       <li>Custom integrations</li>
+      </ul><a href="#" class="cta-button">Go Premium</a>
+     </div>
+    </div>
+   </div>
+  </section><!-- FAQ -->
+  <section class="faq">
+   <div class="container">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <div class="faq-item">
+     <div class="faq-question">
+      Do I need a separate app? <span class="faq-toggle">+</span>
+     </div>
+     <div class="faq-answer">
+      No! Memorae works entirely within WhatsApp. Just add our contact and start messaging - no downloads or installations required.
+     </div>
+    </div>
+    <div class="faq-item">
+     <div class="faq-question">
+      Can I set recurring reminders? <span class="faq-toggle">+</span>
+     </div>
+     <div class="faq-answer">
+      Yes! With our Pro and SuperNova plans, you can set daily, weekly, monthly, or custom recurring reminders that repeat automatically.
+     </div>
+    </div>
+    <div class="faq-item">
+     <div class="faq-question">
+      Is WhatsApp enough? <span class="faq-toggle">+</span>
+     </div>
+     <div class="faq-answer">
+      Absolutely! Unlike complex task management tools, Memorae focuses specifically on reminders and works entirely through WhatsApp chat. It's simple, familiar, and effective.
+     </div>
+    </div>
+    <div class="faq-item">
+     <div class="faq-question">
+      How does Google Calendar sync work? <span class="faq-toggle">+</span>
+     </div>
+     <div class="faq-answer">
+      Memorae can automatically add your reminders to Google Calendar and sync existing events. This keeps everything organized in one place while still getting WhatsApp notifications.
+     </div>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer class="footer">
+   <div class="container">
+    <div class="footer-links"><a href="#">Privacy Policy</a> <a href="#">Terms of Use</a> <a href="#">Cookie Settings</a> <a href="#">Support</a>
+    </div>
+    <div class="footer-copyright" id="footer-text">
+     © 2024 Memorae. All rights reserved.
+    </div>
+   </div>
+  </footer>
+  <script>
+        // FAQ Toggle functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Elements SDK Configuration
+        const defaultConfig = {
+            main_headline: "Your WhatsApp assistant who remembers what you forget",
+            sub_headline: "One message. One assistant. Many reminders.",
+            cta_button_text: "Try in WhatsApp",
+            company_name: "Memorae",
+            footer_text: "© 2024 Memorae. All rights reserved.",
+            primary_color: "#25d366",
+            background_color: "#ffffff",
+            text_color: "#2d3748",
+            accent_color: "#128c7e",
+            surface_color: "#f8fafc",
+            font_family: "Inter",
+            font_size: 16
+        };
+
+        async function onConfigChange(config) {
+            // Update text content
+            const mainHeadline = document.getElementById('main-headline');
+            if (mainHeadline) {
+                mainHeadline.textContent = config.main_headline || defaultConfig.main_headline;
+            }
+
+            const subHeadline = document.getElementById('sub-headline');
+            if (subHeadline) {
+                subHeadline.textContent = config.sub_headline || defaultConfig.sub_headline;
+            }
+
+            const ctaButton = document.getElementById('cta-button');
+            if (ctaButton) {
+                ctaButton.textContent = config.cta_button_text || defaultConfig.cta_button_text;
+            }
+
+            const companyName = document.getElementById('company-name');
+            if (companyName) {
+                companyName.textContent = config.company_name || defaultConfig.company_name;
+            }
+
+            const footerText = document.getElementById('footer-text');
+            if (footerText) {
+                footerText.textContent = config.footer_text || defaultConfig.footer_text;
+            }
+
+            // Update colors
+            const primaryColor = config.primary_color || defaultConfig.primary_color;
+            const backgroundColor = config.background_color || defaultConfig.background_color;
+            const textColor = config.text_color || defaultConfig.text_color;
+            const accentColor = config.accent_color || defaultConfig.accent_color;
+            const surfaceColor = config.surface_color || defaultConfig.surface_color;
+
+            // Apply colors to elements
+            document.body.style.backgroundColor = backgroundColor;
+            document.body.style.color = textColor;
+
+            // Update header gradient
+            const header = document.querySelector('.header');
+            if (header) {
+                header.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${accentColor} 100%)`;
+            }
+
+            // Update feature icons and buttons
+            document.querySelectorAll('.feature-icon, .benefit-icon, .step-number').forEach(icon => {
+                icon.style.background = `linear-gradient(135deg, ${primaryColor}, ${accentColor})`;
+            });
+
+            document.querySelectorAll('.cta-button').forEach(button => {
+                button.style.color = primaryColor;
+            });
+
+            // Update surface colors
+            document.querySelectorAll('.features, .how-it-works, .faq').forEach(section => {
+                section.style.backgroundColor = surfaceColor;
+            });
+
+            // Update font
+            const customFont = config.font_family || defaultConfig.font_family;
+            const baseSize = config.font_size || defaultConfig.font_size;
+            
+            document.body.style.fontFamily = `${customFont}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`;
+            document.body.style.fontSize = `${baseSize}px`;
+
+            // Scale headings proportionally
+            document.querySelectorAll('.hero-title').forEach(el => {
+                el.style.fontSize = `${baseSize * 2.2}px`;
+            });
+
+            document.querySelectorAll('.section-title').forEach(el => {
+                el.style.fontSize = `${baseSize * 1.6}px`;
+            });
+
+            document.querySelectorAll('.hero-subtitle').forEach(el => {
+                el.style.fontSize = `${baseSize * 1.1}px`;
+            });
+        }
+
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [
+                    {
+                        get: () => config.primary_color || defaultConfig.primary_color,
+                        set: (value) => {
+                            config.primary_color = value;
+                            window.elementSdk.setConfig({ primary_color: value });
+                        }
+                    },
+                    {
+                        get: () => config.background_color || defaultConfig.background_color,
+                        set: (value) => {
+                            config.background_color = value;
+                            window.elementSdk.setConfig({ background_color: value });
+                        }
+                    },
+                    {
+                        get: () => config.text_color || defaultConfig.text_color,
+                        set: (value) => {
+                            config.text_color = value;
+                            window.elementSdk.setConfig({ text_color: value });
+                        }
+                    },
+                    {
+                        get: () => config.accent_color || defaultConfig.accent_color,
+                        set: (value) => {
+                            config.accent_color = value;
+                            window.elementSdk.setConfig({ accent_color: value });
+                        }
+                    },
+                    {
+                        get: () => config.surface_color || defaultConfig.surface_color,
+                        set: (value) => {
+                            config.surface_color = value;
+                            window.elementSdk.setConfig({ surface_color: value });
+                        }
+                    }
+                ],
+                borderables: [],
+                fontEditable: {
+                    get: () => config.font_family || defaultConfig.font_family,
+                    set: (value) => {
+                        config.font_family = value;
+                        window.elementSdk.setConfig({ font_family: value });
+                    }
+                },
+                fontSizeable: {
+                    get: () => config.font_size || defaultConfig.font_size,
+                    set: (value) => {
+                        config.font_size = value;
+                        window.elementSdk.setConfig({ font_size: value });
+                    }
+                }
+            };
+        }
+
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ["main_headline", config.main_headline || defaultConfig.main_headline],
+                ["sub_headline", config.sub_headline || defaultConfig.sub_headline],
+                ["cta_button_text", config.cta_button_text || defaultConfig.cta_button_text],
+                ["company_name", config.company_name || defaultConfig.company_name],
+                ["footer_text", config.footer_text || defaultConfig.footer_text]
+            ]);
+        }
+
+        // Initialize Elements SDK
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange,
+                mapToCapabilities,
+                mapToEditPanelValues
+            });
+        }
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99ef847bf66ff487',t:'MTc2MzIxNzc3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
