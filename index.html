@@ -189,6 +189,147 @@
             animation: float 30s ease-in-out infinite;
         }
 
+        /* Navigation Bar */
+        .navbar {
+            background: linear-gradient(135deg, rgba(10, 30, 46, 0.95) 0%, rgba(22, 33, 62, 0.95) 50%, rgba(26, 58, 82, 0.95) 100%);
+            backdrop-filter: blur(15px);
+            border-bottom: 2px solid rgba(37, 211, 102, 0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.2);
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-logo-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            border: 1px solid rgba(37, 211, 102, 0.4);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .navbar-logo-icon img {
+            width: 85%;
+            height: 85%;
+            object-fit: contain;
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-menu li {
+            position: relative;
+        }
+
+        .navbar-menu a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .navbar-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #25d366, #128c7e);
+            transition: width 0.3s ease;
+        }
+
+        .navbar-menu a:hover {
+            color: #25d366;
+        }
+
+        .navbar-menu a:hover::after {
+            width: 100%;
+        }
+
+        .navbar-cta {
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .navbar-cta:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+        }
+
+        .navbar-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .navbar-toggle span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* Add padding to body for fixed navbar */
+        body {
+            padding-top: 80px;
+        }
+
         /* Header */
         .header {
             background: linear-gradient(135deg, #0a1e2e 0%, #16213e 50%, #1a3a52 100%);
@@ -198,6 +339,8 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 10px 40px rgba(37, 211, 102, 0.3), inset 0 0 60px rgba(37, 211, 102, 0.05);
+            margin-top: -80px;
+            padding-top: 160px;
         }
 
         .header::before {
@@ -1100,6 +1243,38 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+
+            .navbar-menu {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: rgba(10, 30, 46, 0.98);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                gap: 1rem;
+                padding: 2rem 1.5rem;
+                border-bottom: 1px solid rgba(37, 211, 102, 0.2);
+                animation: slideDown 0.3s ease;
+            }
+
+            .navbar-menu.active {
+                display: flex;
+            }
+
+            .navbar-toggle {
+                display: flex;
+            }
+
+            .navbar-menu a {
+                font-size: 1rem;
+                padding: 0.5rem 0;
+            }
+
             .hero-title {
                 font-size: 2.5rem;
             }
@@ -1140,13 +1315,49 @@
                 transform: translateY(-10px) scale(1.01);
             }
         }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
   <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
  </head>
- <body><!-- Header -->
-  <header class="header">
+ <body><!-- Navigation Bar -->
+  <nav class="navbar">
+   <div class="navbar-container">
+    <a href="#" class="navbar-logo">
+     <div class="navbar-logo-icon">
+      <img src="logo.svg" alt="Memorae" />
+     </div>
+     <span>Memorae</span>
+    </a>
+    <ul class="navbar-menu" id="navbarMenu">
+     <li><a href="#features">Features</a></li>
+     <li><a href="#benefits">Why Choose</a></li>
+     <li><a href="#how-it-works">How It Works</a></li>
+     <li><a href="#pricing">Pricing</a></li>
+     <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <button class="navbar-cta" onclick="document.getElementById('cta-button').click()">Try for Free</button>
+    <button class="navbar-toggle" id="navbarToggle">
+     <span></span>
+     <span></span>
+     <span></span>
+    </button>
+   </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="header" id="header">
    <!-- AI Orbit Elements -->
    <div class="ai-orbit orbit-large"></div>
    <div class="ai-orbit orbit-medium"></div>
@@ -1203,7 +1414,7 @@
     </div>
    </div>
   </header><!-- Features Section -->
-  <section class="features">
+  <section class="features" id="features">
    <div class="container">
     <h2 class="section-title">Everything you need, right in WhatsApp</h2>
     <div class="features-grid">
@@ -1238,7 +1449,7 @@
     </div>
    </div>
   </section><!-- Benefits Section -->
-  <section class="benefits">
+  <section class="benefits" id="benefits">
    <div class="container">
     <h2 class="section-title">Why choose Memorae?</h2>
     <div class="benefits-grid">
@@ -1272,7 +1483,7 @@
     </div>
    </div>
   </section><!-- How it works -->
-  <section class="how-it-works">
+  <section class="how-it-works" id="how-it-works">
    <div class="container">
     <h2 class="section-title">How it works</h2>
     <div class="steps-container">
@@ -1307,7 +1518,7 @@
     </div>
    </div>
   </section><!-- Pricing -->
-  <section class="pricing">
+  <section class="pricing" id="pricing">
    <div class="container">
     <h2 class="section-title">Choose your plan</h2>
     <div class="pricing-grid">
@@ -1352,7 +1563,7 @@
     </div>
    </div>
   </section><!-- FAQ -->
-  <section class="faq">
+  <section class="faq" id="faq">
    <div class="container">
     <h2 class="section-title">Frequently Asked Questions</h2>
     <div class="faq-item">
@@ -1399,6 +1610,21 @@
    </div>
   </footer>
   <script>
+        // Navbar Mobile Toggle
+        const navbarToggle = document.getElementById('navbarToggle');
+        const navbarMenu = document.getElementById('navbarMenu');
+
+        navbarToggle.addEventListener('click', () => {
+            navbarMenu.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked
+        document.querySelectorAll('.navbar-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navbarMenu.classList.remove('active');
+            });
+        });
+
         // FAQ Toggle functionality
         document.querySelectorAll('.faq-question').forEach(question => {
             question.addEventListener('click', () => {
